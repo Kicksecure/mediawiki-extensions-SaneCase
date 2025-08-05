@@ -1,22 +1,39 @@
 {
 	"name": "SaneCase",
-	"version": "2.0",
+	"version": "3.1",
 	"author": [
 		"Martin Tournoij"
 	],
 	"description": "Automatically redirect case mistakes",
 	"url": "https://www.mediawiki.org/wiki/Extension:SaneCase",
 	"license-name": "MIT",
+	"type": "other",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.41.0"
 	},
 	"AutoloadClasses": {
 		"SaneCase": "SaneCase.php"
 	},
+	"ConfigRegistry": {
+		"sanecase": "GlobalVarConfig::newInstance"
+	},
+	"HookHandlers": {
+		"SaneCaseHooks": {
+			"class": "SaneCase",
+			"services": [
+				"ConfigFactory",
+				"DBLoadBalancer"
+			]
+		}
+	},
 	"Hooks": {
-		"BeforeDisplayNoArticleText": [
-			"SaneCase::onBeforeDisplayNoArticleText"
-		]
+		"BeforeDisplayNoArticleText": "SaneCaseHooks"
+	},
+	"config": {
+		"SaneCaseAutofixSpecialCharBreak": {
+			"value": false,
+			"description": "Tries to fix automatically cut URLs at the presence of special characters."
+		}
 	},
 	"manifest_version": 2
 }
